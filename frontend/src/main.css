@@ -32,13 +32,13 @@ a {
 }
 #part1 {
   float: left;
-  padding-left: 22%;
+  padding-left: 24.5%;
 }
 #title {
   margin-top: 30px;
 }
 #palpart {
-  padding-right: 25%;
+  padding-right: 22.5%;
   display: inline-block;
 }
 .button:hover {
