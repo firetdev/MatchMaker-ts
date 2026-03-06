@@ -18,8 +18,9 @@ const PaletteViewer: React.FC<Props> = ({ colors }) => {
     const blockSize = canvas.width / blocksPerRow;
     const rows = Math.ceil(colors.length / blocksPerRow);
     canvas.height = rows * blockSize;
-    if (canvas.height == 0)
+    if (canvas.height == 0) {
       canvas.height = 360;
+    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 

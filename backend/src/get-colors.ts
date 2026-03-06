@@ -77,8 +77,9 @@ export function getColors(clrs: Color[], num: number): Color[] {
       centers[i].b = newB;
     }
 
-    if (!hasMoved)
-      break; 
+    if (!hasMoved) {
+      break;
+    }
   }
 
   return centers;
