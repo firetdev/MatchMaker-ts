@@ -14,10 +14,8 @@ app.use(express.json());
 // Set up Multer to keep the uploaded file in memory (RAM) instead of saving to disk
 const upload = multer({ storage: multer.memoryStorage() });
 
-// upload.single('image') tells Express to look for a file attached to the 'image' field
 app.post('/api/palette', upload.single('image'), async (req: Request, res: Response): Promise<any> => {
   try {
-    // Validate the input
     if (!req.file) {
       return res.status(400).json({ error: 'No image uploaded' });
     }
@@ -43,9 +41,9 @@ app.post('/api/palette', upload.single('image'), async (req: Request, res: Respo
       });
     }
 
+    // Create the palette
     const palette = getColors(clrs, numColors); 
 
-    // Send it back to the frontend
     res.json({ palette: palette });
 
   } catch (error) {
