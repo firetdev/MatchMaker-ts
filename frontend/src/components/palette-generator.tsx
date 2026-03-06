@@ -1,6 +1,8 @@
 import React, { useState, useRef, type ChangeEvent } from 'react';
 import { type Color } from '../types.js';
 
+const API_URL = 'http://localhost:3000/api/palette';
+
 interface Props {
   onPaletteGenerated: (colors: Color[]) => void;
 }
@@ -19,16 +21,40 @@ const PaletteGenerator: React.FC<Props> = ({ onPaletteGenerated }) => {
     }
   };
 
-  const extractPalette = () => {
-    // Logic from your original main.js would go here.
-    // For now, we'll simulate finding 5 colors.
-    const dummyPalette = [{ r: 255, g: 0, b: 0 }, { r: 0, g: 255, b: 0 }, { r: 0, g: 0, b: 255 }, { r: 255, g: 0, b: 255 }];
-    onPaletteGenerated(dummyPalette);
+  const extractPalette = async () => {
+    const fileInput = document.getElementById('image1') as HTMLInputElement;
+    const file = fileInput?.files?.[0];
+
+    if (!file) {
+      alert('Please choose an image first.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('numColors', numColors.toString());
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Server error');
+      }
+
+      const data = await response.json();
+
+      onPaletteGenerated(data.palette);
+    } catch (err) {
+      console.error('Palette generation failed:', err);
+    }
   };
 
   return (
     <div id="part1">
-      <img ref={imgRef} className="imagedisplay" alt="Preview" style={{ display: fileName ? 'block' : 'none' }} />
+      <img ref={imgRef} className="imagedisplay" alt="Preview" width="480" style={{ display: fileName ? 'block' : 'none' }} />
       
       <div className="controls">
         <label>Number of colors: </label>
@@ -37,7 +63,7 @@ const PaletteGenerator: React.FC<Props> = ({ onPaletteGenerated }) => {
           value={numColors} 
           onChange={(e) => setNumColors(parseInt(e.target.value))} 
         />
-        <br /><br />
+        <br/><br/>
         
         <input type="file" id="image1" className="file" accept="image/*" onChange={handleFileChange} />
         <label htmlFor="image1" className="button">Choose file</label>

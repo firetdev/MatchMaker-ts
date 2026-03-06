@@ -14,13 +14,18 @@ const PaletteViewer: React.FC<Props> = ({ colors }) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Clear and draw the palette blocks
+    const blocksPerRow = 4;
+    const blockSize = canvas.width / blocksPerRow;
+    const rows = Math.ceil(colors.length / blocksPerRow);
+    canvas.height = rows * blockSize;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const blockHeight = canvas.height / colors.length;
-    
+
     colors.forEach((color, i) => {
+      const row = Math.floor(i / blocksPerRow);
+      const col = i % blocksPerRow;
       ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
-      ctx.fillRect(0, i * blockHeight, canvas.width, blockHeight);
+      ctx.fillRect(col * blockSize, row * blockSize, blockSize, blockSize);
     });
   }, [colors]);
 
