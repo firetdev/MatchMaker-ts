@@ -1,26 +1,59 @@
 import express, { Request, Response } from 'express';
+import { Color } from './types.js';
+import { getColors } from './get-colors.js'
 import cors from 'cors';
+import multer from 'multer';
+import sharp from 'sharp';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors()); // Allows your React app to ping this API
-app.use(express.json()); // Lets Express read JSON in request bodies
+app.use(cors());
+app.use(express.json());
 
-// A test route to make sure things are working
-app.get('/', (req: Request, res: Response) => {
-  res.send({ message: 'MatchMaker API is humming along!' });
-});
+// Set up Multer to keep the uploaded file in memory (RAM) instead of saving to disk
+const upload = multer({ storage: multer.memoryStorage() });
 
-// A placeholder for your future "Projects" or "Profiles" endpoint
-app.get('/api/projects', (req: Request, res: Response) => {
-  res.json([
-    { id: 1, name: 'Project Alpha', description: 'A cool TypeScript app' },
-    { id: 2, name: 'Project Beta', description: 'Looking for a React dev' }
-  ]);
+// upload.single('image') tells Express to look for a file attached to the 'image' field
+app.post('/api/palette', upload.single('image'), async (req: Request, res: Response): Promise<any> => {
+  try {
+    // Validate the input
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image uploaded' });
+    }
+
+    const numColors = parseInt(req.body.numColors, 10);
+    if (!numColors || numColors < 1) {
+      return res.status(400).json({ error: 'Please provide a valid number of colors' });
+    }
+
+    // Extract raw pixels using Sharp
+    const { data, info } = await sharp(req.file.buffer)
+      .resize(480)
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
+    // Format the data
+    const clrs: Color[] = [];
+    for (let i = 0; i < data.length; i += info.channels) {
+      clrs.push({
+        r: data[i],
+        g: data[i + 1],
+        b: data[i + 2],
+      });
+    }
+
+    const palette = getColors(clrs, numColors); 
+
+    // Send it back to the frontend
+    res.json({ palette: palette });
+
+  } catch (error) {
+      console.error('Error processing image:', error);
+      res.status(500).json({ error: 'Failed to process image' });
+  }
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server ready at http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
