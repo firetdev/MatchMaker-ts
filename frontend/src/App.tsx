@@ -15,12 +15,10 @@ const App: React.FC = () => {
       <main>
         <PaletteGenerator onPaletteGenerated={setColors} />
         
-        {colors.length > 0 && (
-          <>
-            <div id="divider"></div>
-            <PaletteViewer colors={colors} />
-          </>
-        )}
+        <>
+          <div id="divider"></div>
+          <PaletteViewer colors={colors} />
+        </>
       </main>
     </div>
   );

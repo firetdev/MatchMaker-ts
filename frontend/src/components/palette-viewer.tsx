@@ -18,6 +18,8 @@ const PaletteViewer: React.FC<Props> = ({ colors }) => {
     const blockSize = canvas.width / blocksPerRow;
     const rows = Math.ceil(colors.length / blocksPerRow);
     canvas.height = rows * blockSize;
+    if (canvas.height == 0)
+      canvas.height = 360;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -31,7 +33,7 @@ const PaletteViewer: React.FC<Props> = ({ colors }) => {
 
   return (
     <div id="palpart">
-      <canvas ref={paletteCanvasRef} width="256" height="380"></canvas>
+      <canvas ref={paletteCanvasRef} width="256" height="360"></canvas>
       <br/><br/>
       
       <div className="download-group">
