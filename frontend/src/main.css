@@ -27,17 +27,18 @@ a {
   transition: background-color 0.5s;
   cursor: pointer;
 }
-.filename {
-  margin-top: 10px;
+.imagedisplay {
+  outline: 5px solid white;
 }
 #part1 {
   float: left;
-  padding-left: 10%;
+  padding-left: 22%;
 }
 #title {
   margin-top: 30px;
 }
 #palpart {
+  padding-right: 25%;
   display: inline-block;
 }
 .button:hover {

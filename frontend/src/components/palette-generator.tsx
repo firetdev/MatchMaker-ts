@@ -55,7 +55,8 @@ const PaletteGenerator: React.FC<Props> = ({ onPaletteGenerated }) => {
   return (
     <div id="part1">
       <img ref={imgRef} className="imagedisplay" alt="Preview" width="480" style={{ display: fileLoaded ? 'block' : 'none' }} />
-      
+      <canvas width="480" height="360" style={{ display: !fileLoaded ? 'block' : 'none' }} />
+
       <br/>
       <div className="controls">
         <label>Number of colors: </label>

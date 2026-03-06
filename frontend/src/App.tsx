@@ -10,6 +10,7 @@ const App: React.FC = () => {
     <div className="container">
       <h1 id="title">MatchMaker</h1>
       <h3><i>Make palettes from images</i></h3>
+      <br/><br/>
       
       <main>
         <PaletteGenerator onPaletteGenerated={setColors} />
