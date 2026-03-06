@@ -35,12 +35,6 @@ const PaletteViewer: React.FC<Props> = ({ colors }) => {
     <div id="palpart">
       <canvas ref={paletteCanvasRef} width="256" height="360"></canvas>
       <br/><br/>
-      
-      <div className="download-group">
-        <button className="button">Download (image)</button>
-        <br/>
-        <button className="button">Download (rgb)</button>
-      </div>
     </div>
   );
 };
