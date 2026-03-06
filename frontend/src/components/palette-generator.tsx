@@ -9,13 +9,13 @@ interface Props {
 
 const PaletteGenerator: React.FC<Props> = ({ onPaletteGenerated }) => {
   const [numColors, setNumColors] = useState(16);
-  const [fileName, setFileName] = useState('');
+  const [fileLoaded, setFileLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFileName(file.name);
+      setFileLoaded(true);
       const url = URL.createObjectURL(file);
       if (imgRef.current) imgRef.current.src = url;
     }
@@ -54,8 +54,9 @@ const PaletteGenerator: React.FC<Props> = ({ onPaletteGenerated }) => {
 
   return (
     <div id="part1">
-      <img ref={imgRef} className="imagedisplay" alt="Preview" width="480" style={{ display: fileName ? 'block' : 'none' }} />
+      <img ref={imgRef} className="imagedisplay" alt="Preview" width="480" style={{ display: fileLoaded ? 'block' : 'none' }} />
       
+      <br/>
       <div className="controls">
         <label>Number of colors: </label>
         <input 
@@ -63,15 +64,16 @@ const PaletteGenerator: React.FC<Props> = ({ onPaletteGenerated }) => {
           value={numColors} 
           onChange={(e) => setNumColors(parseInt(e.target.value))} 
         />
-        <br/><br/>
+        <br/>
         
         <input type="file" id="image1" className="file" accept="image/*" onChange={handleFileChange} />
         <label htmlFor="image1" className="button">Choose file</label>
-        <span className="filename">{fileName}</span>
         
-        <button className="button" onClick={extractPalette} style={{ marginLeft: '10px' }}>
+        <div className="button" onClick={extractPalette} style={{ marginLeft: '10px' }}>
           Generate Palette
-        </button>
+        </div>
+
+        <br/><br/><br/><br/>
       </div>
     </div>
   );
