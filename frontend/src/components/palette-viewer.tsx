@@ -5,7 +5,7 @@ interface Props {
   colors: Color[];
 }
 
-const PaletteViewer: React.FC<Props> = ({ colors }) => {
+function PaletteViewer({ colors }: Props) {
   const paletteCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

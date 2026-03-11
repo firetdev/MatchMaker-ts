@@ -7,7 +7,7 @@ interface Props {
   onPaletteGenerated: (colors: Color[]) => void;
 }
 
-const PaletteGenerator: React.FC<Props> = ({ onPaletteGenerated }) => {
+function PaletteGenerator({ onPaletteGenerated }: Props)  {
   const [numColors, setNumColors] = useState(16);
   const [fileLoaded, setFileLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);

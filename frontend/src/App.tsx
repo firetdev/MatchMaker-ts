@@ -3,7 +3,7 @@ import PaletteGenerator from './components/palette-generator.jsx';
 import PaletteViewer from './components/palette-viewer.jsx';
 import { type Color } from './types.js';
 
-const App: React.FC = () => {
+function App() {
   const [colors, setColors] = useState<Color[]>([]);
 
   return (
